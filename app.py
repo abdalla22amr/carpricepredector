@@ -14,10 +14,13 @@ def load_data():
 def load_model_from_url(url):
     response = requests.get(url)
     response.raise_for_status()  # Raises an error for HTTP issues
-    if "html" in response.headers.get("Content-Type", "").lower():
+    content_type = response.headers.get("Content-Type", "").lower()
+    print("Content-Type:", content_type)
+    print("First 200 characters of response:", response.text[:200])
+    if "html" in content_type:
         raise ValueError("Expected a pickle file but got HTML. Check your URL.")
     
-    print("Downloaded file size:", len(response.content))
+    import io
     buffer = io.BytesIO(response.content)
     model = joblib.load(buffer)
     return model
