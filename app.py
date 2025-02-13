@@ -8,10 +8,24 @@ def load_data():
     data = pd.read_csv("Cars_Data.csv")
     return data
 
+def load_model_from_url(url):
+    response = requests.get(url)
+    with tempfile.NamedTemporaryFile() as tmp:
+        tmp.write(response.content)
+        tmp.flush()
+        model = joblib.load(tmp.name)
+    return model
+
 @st.cache_resource
 def load_model():
-    model = joblib.load("random_forest_model.pkl")
+    model_url = "https://drive.google.com/file/d/125Nq2CnI6gDkMZuMThfSDx1_nUrspWX6/view?usp=sharing"
+    model = load_model_from_url(model_url)
     return model
+
+# @st.cache_resource
+# def load_model():
+#     model = joblib.load("random_forest_model.pkl")
+#     return model
 
 @st.cache_resource
 def load_expected_columns():
