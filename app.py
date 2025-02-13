@@ -10,8 +10,7 @@ def load_data():
 
 @st.cache_resource
 def load_model():
-    model = RandomForestRegressor
-    model.load_model("random_forest_model.pkl")
+    model = joblib.load("random_forest_model.pkl")
     return model
 
 @st.cache_resource
