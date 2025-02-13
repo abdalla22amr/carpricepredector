@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 import joblib
+import tempfile
+import requests
 from sklearn.ensemble import RandomForestRegressor
 
 @st.cache_resource
