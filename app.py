@@ -12,9 +12,11 @@ def load_data():
 
 def load_model_from_url(url):
     response = requests.get(url)
+    response.raise_for_status()  # Ensure the request was successful
     with tempfile.NamedTemporaryFile() as tmp:
         tmp.write(response.content)
         tmp.flush()
+        tmp.seek(0)  # Reset file pointer to the beginning
         model = joblib.load(tmp.name)
     return model
 
