@@ -3,12 +3,24 @@ import pandas as pd
 import joblib
 import tempfile
 import requests
+import io
 from sklearn.ensemble import RandomForestRegressor
 
 @st.cache_resource
 def load_data():
     data = pd.read_csv("Cars_Data.csv")
     return data
+    
+def load_model_from_url(url):
+    response = requests.get(url)
+    response.raise_for_status()  # Raises an error for HTTP issues
+    if "html" in response.headers.get("Content-Type", "").lower():
+        raise ValueError("Expected a pickle file but got HTML. Check your URL.")
+    
+    print("Downloaded file size:", len(response.content))
+    buffer = io.BytesIO(response.content)
+    model = joblib.load(buffer)
+    return model
 
 @st.cache_resource
 def load_model():
