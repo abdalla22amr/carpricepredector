@@ -11,21 +11,21 @@ def load_data():
     data = pd.read_csv("Cars_Data.csv")
     return data
     
-@st.cache_resource
-def load_model():
-    file_id = "125Nq2CnI6gDkMZuMThfSDx1_nUrspWX6"
-    url = f"https://drive.google.com/uc?id={file_id}"
-    
-    # Download the model to a temporary file
-    with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
-        gdown.download(url, tmp_file.name, quiet=False)
-        model = joblib.load(tmp_file.name)
-    return model
-
 # @st.cache_resource
 # def load_model():
-#     model = joblib.load("random_forest_model.pkl")
+#     file_id = "125Nq2CnI6gDkMZuMThfSDx1_nUrspWX6"
+#     url = f"https://drive.google.com/uc?id={file_id}"
+    
+#     # Download the model to a temporary file
+#     with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+#         gdown.download(url, tmp_file.name, quiet=False)
+#         model = joblib.load(tmp_file.name)
 #     return model
+
+@st.cache_resource
+def load_model():
+    model = joblib.load("random_forest_model.pkl")
+    return model
 
 @st.cache_resource
 def load_expected_columns():
