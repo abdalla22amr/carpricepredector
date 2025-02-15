@@ -2,8 +2,8 @@ import streamlit as st
 import pandas as pd
 import joblib
 import tempfile
-import requests
-import io
+import gdown
+import tempfile
 from sklearn.ensemble import RandomForestRegressor
 
 @st.cache_resource
@@ -11,24 +11,15 @@ def load_data():
     data = pd.read_csv("Cars_Data.csv")
     return data
     
-def load_model_from_url(url):
-    response = requests.get(url)
-    response.raise_for_status()  # Raises an error for HTTP issues
-    content_type = response.headers.get("Content-Type", "").lower()
-    print("Content-Type:", content_type)
-    print("First 200 characters of response:", response.text[:200])
-    if "html" in content_type:
-        raise ValueError("Expected a pickle file but got HTML. Check your URL.")
-    
-    import io
-    buffer = io.BytesIO(response.content)
-    model = joblib.load(buffer)
-    return model
-
 @st.cache_resource
 def load_model():
-    model_url = "https://drive.google.com/file/d/125Nq2CnI6gDkMZuMThfSDx1_nUrspWX6/view?usp=sharing"
-    model = load_model_from_url(model_url)
+    file_id = "125Nq2CnI6gDkMZuMThfSDx1_nUrspWX6"
+    url = f"https://drive.google.com/uc?id={file_id}"
+    
+    # Download the model to a temporary file
+    with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+        gdown.download(url, tmp_file.name, quiet=False)
+        model = joblib.load(tmp_file.name)
     return model
 
 # @st.cache_resource
