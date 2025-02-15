@@ -14,11 +14,13 @@ def load_data():
 def load_model():
     file_id = "125Nq2CnI6gDkMZuMThfSDx1_nUrspWX6"
     url = f"https://drive.google.com/uc?id={file_id}"
-    
-    # Download the model to a temporary file
-    with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
-        gdown.download(url, tmp_file.name, quiet=False)
-        model = joblib.load(tmp_file.name)
+    try:
+        with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+            gdown.download(url, tmp_file.name, quiet=False)
+            model = joblib.load(tmp_file.name)
+    except Exception as e:
+        st.error("Error loading the model: " + str(e))
+        raise e
     return model
 
 # @st.cache_resource
