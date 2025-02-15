@@ -3,7 +3,6 @@ import pandas as pd
 import joblib
 import tempfile
 import gdown
-import tempfile
 from sklearn.ensemble import RandomForestRegressor
 
 @st.cache_resource
